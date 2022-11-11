@@ -4,41 +4,22 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body{background-color: rgb(34, 16, 77);}
+        a{
+            display: block;
+            color: aquamarine;
+            font-size: 20px;
+        }
+    </style>
     <title>1</title>
 </head>
 <body>
-    123
-    <div id="app">
-        <!-- 雙大括號是模組化語言 -->
-        <h1>{{ typeof count}}</h1>
-        <hr>
-        <p>{{name}}想吃{{kind}}</p>
-        <p>{{name}}{{kind}}</p>
-        <p>{{talk ? '愛講話': '吼呦'}}{{kind}}</p>
-        <div>{{array,length}}</div>
-        <div>{{array}}</div>
-        <div>{{obj}}</div>
-    </div>
-    
-    <script src="https://unpkg.com/vue@next"></script>
-    <script>
-        // 檢查Vue
-        // console.log(Vue)
-        
-        // 新增一個應用程式application->建立Vue實體(instance)
-        Vue.createApp({
-            data(){
-                return {
-                    count: 1,
-                    name: '烏龜',
-                    kind:"疲憊",
-                    talk:true, //boolean
-                    array: [1,2,3],
-                    obj:{test:'123'}
-                }
-            }
-        }).mount("#app") // 並掛載(mount)在網頁節點上(id="app")
-    </script>
+    <a href="00vue2.html">00_start.html</a>
+    <a href="01.html">01_Vue2.html</a>
+    <a href="02v-model.html">02_model.html</a>
+    <a href="03v-for.html">03_for.html</a>
+    <a href="04v-calc.html">04_calc.html</a>
     
 </body>
 </html>

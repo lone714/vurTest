@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1</title>
+    <style>
+        form{
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <form action="">
+            <label for="">email</label>
+            <input type="email">
+            <label for="">name</label>
+            <input type="text">
+            1{{name}}1
+            <div>
+                <label for="">喜歡喝紅酒</label>
+                <input type="checkbox">
+                <label for="">喜歡喝燒酒</label>
+                <input type="checkbox">
+                {{drink}}
+            </div>
+            <div>
+                <input type="radio" id="taipei" name="location" value="taipei"  v-model="location" checked>
+                <label for="taipei">taipei</label>
+                <input type="radio" id="taipei" name="location" value="hsinchu"  v-model="location">
+                <label for="hsinchu">hsinchu</label>
+                {{location}}
+            </div>
+            <label for="food">food</label>
+            <select name="food" id="food" v-model="food">
+                <option value="pig">豬</option>
+                <option value="beef">牛</option>
+            </select>
+            {{food}}
+            <div>
+                {{color}}
+                <input type="color" name="head" id="head" v-model="color">
+            </div>
+
+
+
+        </form>
+
+    </div>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+        Vue.createApp({
+            data(){
+                return {
+                    email:'',
+                    name:'',
+                    drink:[],
+                    location:'',
+                    food:'',
+                    color:'',
+                    date: new date()
+                }
+            },
+     
+
+        }).mount("#app")
+    </script>
+</body>
+</html>

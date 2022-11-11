@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>carts</title>
+    <script src="https://unpkg.com/vue@next"></script>
+</head>
+<body>
+    <div id="view">
+        <div id="productContainer" class="cardContainer inline">
+            <div v-for="(item, index) in productList" :key="item.id">
+                <img :src="`https://picsum.photos/300/200/?random=${item.id}`" alt="">
+                <p>{{item.name}}</p>
+                <p>{{item.price}}</p>
+                <div class="inline">
+                    <button @click="reduceCarts(item.id)">-</button>
+                    <p>{{parseOrderCount(item.id)}}</p>
+                    <button @click="addCarts(item.id)">+</button>
+                </div>
+            </div>
+        </div>
+        <div v-if="orderList.length > 0" id="orderContainer" class="cardContainer inline">
+            <p>訂單資訊</p>
+            <div v-for="(item, index) in orderList" :key="item.id">
+                <p>名稱：{{item.name}}</p>
+                <p>數量：{{item.count}}</p>
+                <p>單價{{item.price}}</p>
+                <p>總價{{item.total}}</p>
+            </div>
+            <p>商品項目數量：{{orderList.length}}</p>
+        </div>
+    </div>
+</body>
+<script>
+    const VM = {
+        data(){
+            return {
+                productList: [
+                    {
+                        id: 10,
+                        name:"滾筒",
+                        price:2000
+                    },
+                    {
+                        id: 11,
+                        name:"精油",
+                        price:1500
+                    },
+                    {
+                        id: 12,
+                        name:"按摩球",
+                        price:1000
+                    },
+                ],
+                orderList: []
+            }
+        },
+        methods: {
+            reduceCarts(id){
+                // {return xxxx} 可以簡寫成 （xxx)
+                const orderIndex = this.orderList.findIndex(item => item.id === id)
+                if(orderIndex < 0) return
+                if(this.orderList[orderIndex]['count'] === 1){
+                    //剩下一個，要直接移除
+                    this.orderList.splice(orderIndex, 1)
+                }else{
+                    this.orderList[orderIndex]['count'] -= 1
+                    this.orderList[orderIndex]['total'] = (this.orderList[orderIndex]['price'] * this.orderList[orderIndex]['count'])
+                }
+                this.setStorage()
+            },
+            addCarts(id){
+                // {return xxxx} 可以簡寫成 （xxx)
+                const orderIndex = this.orderList.findIndex(item => item && item.id === id)
+
+                if(orderIndex < 0){
+                    const product = this.productList.find(item => {
+                        return item && item.id === id
+                    })
+                    // findIndex找不到的時候會回傳-1 -> 新增至訂單
+                    this.orderList.push({
+                        id: product.id,
+                        price: product.price,
+                        total: product.price,
+                        count: 1
+                    })
+                }else{
+                    // 已存在在訂單中
+                    this.orderList[orderIndex]['count'] += 1
+                    this.orderList[orderIndex]['total'] = (this.orderList[orderIndex]['price'] * this.orderList[orderIndex]['count'])
+                }
+                this.setStorage()
+            },
+            parseOrderCount(id){
+                if(!id) return 0
+                const product = this.orderList.find(item => item && item.id === id)
+                return product? product.count : 0
+            },
+            setStorage(){
+                 //localStorage 的 value僅能存數字字串布林值，陣列或物件要先轉型
+                localStorage.setItem('turleShop', JSON.stringify(this.orderList))
+            },
+            getStorage(){
+                //localStorage 的 value僅能存數字字串布林值，陣列或物件要先轉型
+                var orderLists = localStorage.getItem("turleShop")
+                if(!orderLists)return
+                this.orderList = JSON.parse(orderLists)
+            }
+        },
+        created() {
+            this.getStorage()
+        }
+    }
+    Vue.createApp(VM).mount('#view')
+</script>
+</html>
+<style>
+    .inline{
+        display: inline-flex;
+    }
+    .cardContainer{
+        width: 100%;
+    }
+    .cardContainer > div{
+        margin: .5rem;
+    }
+</style>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>vue2</title>
+    <style>
+      body {
+        background-color: #555;
+      }
+      #app {
+        width: 300px;
+        margin: auto;
+        padding: 30px;
+        border-radius: 20px;
+        background-color: #222;
+        color: #eee;
+      }
+      button {
+        background-color: #444;
+        color: #ccc;
+        border: 0;
+        margin: 0 5px;
+      }
+      li {
+        list-style-type: none;
+      }
+      li[type="checkbox" i] {
+        color: #aaa;
+      }
+      .complete {
+        color: #aaa;
+      }
+      input[type="text"] {
+        background-color: #444;
+        border: none;
+        height: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <h2>記事本</h2>
+      <input type="text" v-model="toDoText" />
+      <button @click="createItem">新增待辦事項</button>
+      <ul>
+        <li v-for="(item, index) in list" :key="index">
+          <input type="checkbox" v-model="item.select" />
+          {{item.name}}
+        </li>
+      </ul>
+      <div>共{{AllTodos}}代辦事項，已完成{{AllDone}}件</div>
+      <button @click="doneAll">全部完成</button>
+      <hr />
+      <!-- <h6>已完成項目</h6> -->
+      <!-- <ul> -->
+      <!-- <li v-for="(item, index) in doneList" :key="index">{{item.name}}</li> -->
+      <!-- </ul> -->
+      <button @click="clearAll">全部刪除</button>
+      <button @click="clearSelect">刪除完成項目(刪除選取)</button>
+    </div>
+    <script src="https://unpkg.com/vue@next"></script>
+    <script>
+      const App = {
+        data() {
+          return {
+            toDoText: "",
+            list: [
+              { select: false, name: "測試項目001" },
+              { select: true, name: "測試項目002" },
+              { select: true, name: "測試項目003" },
+            ],
+          };
+        },
+        computed: {
+          AllTodos() {
+            return this.list.length;
+          },
+          AllDone() {
+            return this.list.filter((item) => item.select).length;
+          },
+
+          //   doneList() {
+          //     return this.list.filter((item) => item.select);
+          //   },
+        },
+        methods: {
+          createItem() {
+            this.list.push({
+              select: false,
+              name: this.toDoText,
+            });
+            this.toDoText = "";
+          },
+          doneAll() {
+            this.list = this.list.map((item) => {
+              return {
+                ...item,
+                select: true,
+              };
+            });
+            return {
+              ...item,
+              select: true,
+            };
+          },
+          clearAll() {
+            this.list = [];
+          },
+          clearSelect() {
+            this.list = this.list.filter((item) => !item.select);
+          },
+        },
+      };
+      Vue.createApp(App).mount("#app");
+    </script>
+  </body>
+</html>

@@ -61,9 +61,10 @@
         },
         methods: {
           keyNumber(number) {
-            if (this.keyin == "0" && number == "0") return; // 限制 原始值為0不能輸入
-
-            this.keyin += number.toString(); // 為了二位數以上數值輸入
+            if (this.keyin == "0" && number == "0") return;
+            // 限制 原始值為0不能輸入
+            this.keyin += number.toString();
+            // 為了二位數以上數值輸入
           },
           keyDote() {
             if (this.keyin.includes(".")) return; //如有小數點就不繼續

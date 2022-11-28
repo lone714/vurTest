@@ -1,53 +1,110 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>1</title>
-</head>
-<body>
+    <style>
+      #app {
+        width: 280px;
+        height: 600px;
+        margin: auto;
+        display: flex;
+        flex-wrap: wrap;
+      }
+      button {
+        width: 50px;
+        height: 45px;
+        margin: 10px;
+      }
+      .col-9 {
+        width: 75%;
+      }
+      .col-3 {
+        width: 25%;
+      }
+    </style>
+  </head>
+  <body>
     <div id="app">
-            <button v-for="num in 9" :key="num" @click="keyin = num">{{num}}</button>
-            <button @click="keyin = 0" >0</button>
-            <br>
-            <button @click="reduce">-</button>
-            <button @click="add">+</button>
-            <button @click="calc">=</button>
-            <button @click="clear">C</button>
-            <div>
-                step:{{step}}
-            </div>
-            <h6>result:{{result}}</h6>
+      <div class="col-9">
+        <button v-for="num in 9" :key="num" @click="keyNumber(num)">
+          {{num}}
+        </button>
+        <button @click="keyNumber(0)">0</button>
+        <button @click="keyDote">.</button>
+        <button @click="clear">AC</button>
+      </div>
+      <div class="col-3">
+        <button @click="equal('-')">-</button>
+        <button @click="equal('+')">+</button>
+        <button @click="equal('*')">X</button>
+        <button @click="equal('/')">/</button>
 
+        <button @click="compute">=</button>
+      </div>
+      <div class="result">result:{{result}}</div>
+      <div class="keyin"><br />{{cache}} {{operator}} {{keyin}}</div>
     </div>
     <script src="https://unpkg.com/vue@next"></script>
-    
+
     <script>
-        Vue.createApp({
-            data(){
-                return{
-                    step: '',
-                    keyin: 0,
-                    result:0
-                }
-            },
-            methods:{
-                // addCount(){
-                //     this.count += 1
-                //     // this.total = this.count * this.price
-                //     this.sumTotal()
-                // },
-                // reduceCount(){
-                //     if(this.count <= 0)return
-                //     this.count -= 1
-                //     this.sumTotal()
-                // },
-                // sumTotal(){
-                //     this.total = this.count * this.price
-                // }
+      Vue.createApp({
+        data() {
+          return {
+            operator: "",
+            cache: null,
+            keyin: 0,
+            result: 0,
+          };
+        },
+        methods: {
+          keyNumber(number) {
+            if (this.keyin == "0" && number == "0") return; // 限制 原始值為0不能輸入
+
+            this.keyin += number.toString(); // 為了二位數以上數值輸入
+          },
+          keyDote() {
+            if (this.keyin.includes(".")) return; //如有小數點就不繼續
+            this.keyin += ".";
+          },
+          equal(operator) {
+            console.log(operator);
+            this.operator = operator;
+            //暫存前一輸入數字，有數值轉換成浮點數，沒有值為0
+            this.cache = this.keyin ? parseFloat(this.keyin) : 0;
+            //清除輸入
+            this.keyin = "";
+          },
+          clear() {
+            this.keyin = "";
+            this.cache = null;
+            this.result = 0;
+            this.operator = "";
+          },
+          compute() {
+            if (this.cache === null) return; //有數字才進行計算
+            const Keyin = this.keyin ? parseFloat(this.keyin) : 0;
+            switch (this.operator) {
+              case "+":
+                this.result = this.cache + Keyin;
+                break;
+              case "-":
+                this.result = this.cache - Keyin;
+                break;
+              case "*":
+                this.result = this.cache * Keyin;
+                break;
+              case "/":
+                this.result = this.cache / Keyin;
+                break;
+              default:
+                break;
             }
-        }).mount("#app")
+          },
+        },
+      }).mount("#app");
     </script>
-</body>
+  </body>
 </html>
